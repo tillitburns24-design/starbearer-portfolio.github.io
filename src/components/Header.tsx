@@ -36,7 +36,7 @@ export const Header: React.FC = () => {
               className="h-28 w-28 sm:h-32 sm:w-32 md:h-36 md:w-36"
             >
               <img
-                src="/profile.jpg"
+                src="profile.jpg"
                 alt="Teodora Jovanović portrait"
                 className="h-full w-full rounded-full border-4 border-gold object-cover shadow-xl"
                 referrerPolicy="no-referrer"
@@ -117,7 +117,7 @@ export const Header: React.FC = () => {
             <div className="flex w-full flex-col items-center gap-8">
               <div className="h-24 w-24 shrink-0">
                 <img
-                  src="/profile.jpg"
+                  src="profile.jpg"
                   alt="Teodora Jovanović portrait"
                   className="h-full w-full rounded-full border-2 border-gold object-cover shadow-md"
                   referrerPolicy="no-referrer"

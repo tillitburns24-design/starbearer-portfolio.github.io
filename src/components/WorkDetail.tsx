@@ -89,7 +89,7 @@ export const WorkDetail: React.FC<WorkDetailProps> = ({ work, onBack, onWorkClic
         <div className="mx-auto flex h-14 max-w-7xl items-center justify-between px-4 sm:px-6 lg:px-8">
           <div className="flex items-center gap-3">
             <img
-              src="/profile.jpg"
+              src="profile.jpg"
               alt="Teodora Jovanović"
               className="h-8 w-8 rounded-full border border-gold/30 object-cover"
               referrerPolicy="no-referrer"
