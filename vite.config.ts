@@ -6,8 +6,9 @@ import {defineConfig, loadEnv} from 'vite';
 export default defineConfig(({mode}) => {
   const env = loadEnv(mode, '.', '');
   const isGitHubPagesBuild = process.env.GITHUB_ACTIONS === 'true';
+  const repositoryName = process.env.GITHUB_REPOSITORY?.split('/')[1] ?? 'starbearer-portfolio.github.io';
   return {
-    base: isGitHubPagesBuild ? '/starbearer_portfolio.github.io/' : '/',
+    base: isGitHubPagesBuild ? `/${repositoryName}/` : '/',
     plugins: [react(), tailwindcss()],
     define: {
       'process.env.GEMINI_API_KEY': JSON.stringify(env.GEMINI_API_KEY),
