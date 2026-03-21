@@ -303,10 +303,10 @@ During the ‘action’ parts of the game, the mechanics differ for each charact
         title: 'Her Guardian',
         category: 'Game Design',
         description: 'A game concept about an amnesiac ghost and a child with a camera exploring a city',
-        imageUrl: '/Her Guardian/Her Guardian.jpg',
+        imageUrl: 'Her Guardian/Her Guardian.jpg',
         longDescription: '"With one foot in the grave and one on the ground, getting a new guardian \'angel\' seems like a good upside to your escape plan..."\n\nA game concept for a puzzle \'your choices matter\' game, where a (near) death experience connects little Mari Gold with a newly awaken ghost, the game design document and concepts are complete, the project just hasn\'t been further developed',
         media: [
-          { type: 'image', url: '/Her Guardian/Her Guardian.jpg' },
+          { type: 'image', url: 'Her Guardian/Her Guardian.jpg' },
           {
             type: 'bubble',
             content: `Creator's note: Parts of this document are ‘blacked’ out for a spoiler <span class="spoiler">[memory]</span> free experience. For the complete text, simply hover over the blacked out sections. \n\n<span class="spoiler">Welcome to the Enlightenment, my Friend.</span>`
@@ -440,10 +440,10 @@ Some of the inspirations for the story of the game come from the movies “Poor 
           {
             type: 'grid',
             urls: [
-              '/Her Guardian/Moodboard 1.png',
-              '/Her Guardian/Moodboard 2.png',
-              '/Her Guardian/Moodboard 3.png',
-              '/Her Guardian/Moodboard 4.png'
+              'Her Guardian/Moodboard 1.png',
+              'Her Guardian/Moodboard 2.png',
+              'Her Guardian/Moodboard 3.png',
+              'Her Guardian/Moodboard 4.png'
             ],
             caption: 'Moodboard for the atmosphere and visual style of Her Guardian'
           }
