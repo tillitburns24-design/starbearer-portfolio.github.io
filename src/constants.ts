@@ -5,23 +5,28 @@ const createTextCover = (title: string, subtitle: string) => {
     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 800">
       <defs>
         <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
-          <stop offset="0%" stop-color="#182133" />
-          <stop offset="50%" stop-color="#25324c" />
-          <stop offset="100%" stop-color="#0d1422" />
+          <stop offset="0%" stop-color="#f6e3ba" />
+          <stop offset="48%" stop-color="#e6bf77" />
+          <stop offset="100%" stop-color="#c9974f" />
         </linearGradient>
-        <radialGradient id="glow" cx="15%" cy="20%" r="90%">
-          <stop offset="0%" stop-color="#fbc572" stop-opacity="0.35" />
-          <stop offset="100%" stop-color="#fbc572" stop-opacity="0" />
+        <radialGradient id="glow" cx="18%" cy="16%" r="88%">
+          <stop offset="0%" stop-color="#fff6df" stop-opacity="0.88" />
+          <stop offset="100%" stop-color="#fff6df" stop-opacity="0" />
+        </radialGradient>
+        <radialGradient id="shadow" cx="88%" cy="80%" r="72%">
+          <stop offset="0%" stop-color="#8e6132" stop-opacity="0.18" />
+          <stop offset="100%" stop-color="#8e6132" stop-opacity="0" />
         </radialGradient>
       </defs>
       <rect width="1200" height="800" fill="url(#bg)" />
       <rect width="1200" height="800" fill="url(#glow)" />
-      <circle cx="980" cy="170" r="180" fill="#fbc572" opacity="0.08" />
-      <circle cx="1040" cy="620" r="240" fill="#fbc572" opacity="0.05" />
-      <text x="88" y="142" fill="#fbc572" font-family="Georgia, serif" font-size="30" letter-spacing="8">STARBEARER</text>
-      <text x="88" y="410" fill="#ffffff" font-family="Georgia, serif" font-size="78" font-weight="700">${title}</text>
-      <text x="88" y="478" fill="#fde0b1" font-family="Arial, sans-serif" font-size="28">${subtitle}</text>
-      <rect x="88" y="560" width="160" height="2" fill="#fbc572" opacity="0.7" />
+      <rect width="1200" height="800" fill="url(#shadow)" />
+      <circle cx="1000" cy="180" r="180" fill="#fff0c8" opacity="0.2" />
+      <circle cx="1020" cy="620" r="240" fill="#9f6d38" opacity="0.08" />
+      <text x="88" y="142" fill="#8e6132" font-family="Georgia, serif" font-size="30" letter-spacing="8">STARBEARER</text>
+      <text x="88" y="410" fill="#3f2a19" font-family="Georgia, serif" font-size="78" font-weight="700">${title}</text>
+      <text x="88" y="478" fill="#5f3f24" font-family="Arial, sans-serif" font-size="28">${subtitle}</text>
+      <rect x="88" y="560" width="160" height="2" fill="#8e6132" opacity="0.7" />
     </svg>
   `;
 

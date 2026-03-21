@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { AnimatePresence, motion } from 'motion/react';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 import { Category, Work } from '../types';
@@ -32,6 +32,9 @@ export const Stripe: React.FC<StripeProps> = ({ title, categories, onWorkClick, 
   const [page, setPage] = useState(0);
   const [direction, setDirection] = useState(0);
   const [itemsPerPage, setItemsPerPage] = useState(getItemsPerPage);
+  const touchStartX = useRef<number | null>(null);
+  const touchStartY = useRef<number | null>(null);
+  const suppressClickRef = useRef(false);
 
   useEffect(() => {
     const syncItemsPerPage = () => setItemsPerPage(getItemsPerPage());
@@ -80,8 +83,62 @@ export const Stripe: React.FC<StripeProps> = ({ title, categories, onWorkClick, 
   };
 
   const paginate = (nextDirection: number) => {
+    if (!activeCategory) {
+      return;
+    }
+
+    const nextPage = page + nextDirection;
+
+    if (nextPage < 0 || nextPage >= totalPages) {
+      return;
+    }
+
     setDirection(nextDirection);
-    setPage((currentPage) => currentPage + nextDirection);
+    setPage(nextPage);
+  };
+
+  const handleTouchStart = (event: React.TouchEvent) => {
+    const touch = event.touches[0];
+    touchStartX.current = touch.clientX;
+    touchStartY.current = touch.clientY;
+  };
+
+  const handleTouchEnd = (event: React.TouchEvent) => {
+    if (touchStartX.current === null || touchStartY.current === null || totalPages <= 1) {
+      return;
+    }
+
+    const touch = event.changedTouches[0];
+    const deltaX = touch.clientX - touchStartX.current;
+    const deltaY = touch.clientY - touchStartY.current;
+
+    touchStartX.current = null;
+    touchStartY.current = null;
+
+    if (Math.abs(deltaX) < 60 || Math.abs(deltaX) <= Math.abs(deltaY)) {
+      return;
+    }
+
+    suppressClickRef.current = true;
+    window.setTimeout(() => {
+      suppressClickRef.current = false;
+    }, 180);
+
+    if (deltaX < 0) {
+      paginate(1);
+      return;
+    }
+
+    paginate(-1);
+  };
+
+  const handleGalleryClickCapture = (event: React.SyntheticEvent) => {
+    if (!suppressClickRef.current) {
+      return;
+    }
+
+    event.preventDefault();
+    event.stopPropagation();
   };
 
   const variants = {
@@ -175,7 +232,12 @@ export const Stripe: React.FC<StripeProps> = ({ title, categories, onWorkClick, 
                 )}
               </div>
 
-              <div className="overflow-hidden py-2">
+              <div
+                className="overflow-hidden py-2 touch-pan-y"
+                onTouchStart={handleTouchStart}
+                onTouchEnd={handleTouchEnd}
+                onClickCapture={handleGalleryClickCapture}
+              >
                 <AnimatePresence custom={direction} initial={false} mode="wait">
                   <motion.div
                     key={`${activeCategory.id}-${page}-${itemsPerPage}`}

@@ -55,10 +55,10 @@ export const Header: React.FC = () => {
               Storyteller, writer, storyboard artist, concept artist, creative
             </p>
 
-            <div className="mb-8 grid gap-3">
+            <div className="mx-auto mb-8 grid max-w-xl gap-3 lg:mx-0">
               {HIGHLIGHTS.map((highlight) => (
-                <div key={highlight} className="flex items-start justify-center gap-3 lg:justify-start">
-                  <span className="mt-2 h-1.5 w-1.5 rounded-full bg-gold" />
+                <div key={highlight} className="mx-auto flex w-full max-w-xl items-start justify-start gap-3 text-left lg:mx-0">
+                  <span className="mt-2 h-1.5 w-1.5 shrink-0 rounded-full bg-gold" />
                   <p className="text-sm font-medium leading-relaxed text-gold-soft sm:text-base">{highlight}</p>
                 </div>
               ))}

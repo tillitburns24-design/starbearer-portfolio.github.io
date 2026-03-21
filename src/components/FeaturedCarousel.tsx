@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { AnimatePresence, motion } from 'motion/react';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 import { Work } from '../types';
@@ -10,6 +10,9 @@ interface FeaturedCarouselProps {
 
 export const FeaturedCarousel: React.FC<FeaturedCarouselProps> = ({ works, onWorkClick }) => {
   const [currentIndex, setCurrentIndex] = useState(0);
+  const touchStartX = useRef<number | null>(null);
+  const touchStartY = useRef<number | null>(null);
+  const suppressClickRef = useRef(false);
 
   useEffect(() => {
     if (works.length <= 1) return;
@@ -34,14 +37,65 @@ export const FeaturedCarousel: React.FC<FeaturedCarouselProps> = ({ works, onWor
   const activeWork = works[currentIndex];
   const featuredImageStyle = activeWork.title === 'The Game' ? { objectPosition: 'center 18%' as const } : undefined;
 
+  const goToNextSlide = () => {
+    setCurrentIndex((prev) => (prev + 1) % works.length);
+  };
+
+  const goToPrevSlide = () => {
+    setCurrentIndex((prev) => (prev - 1 + works.length) % works.length);
+  };
+
   const nextSlide = (event: React.MouseEvent) => {
     event.stopPropagation();
-    setCurrentIndex((prev) => (prev + 1) % works.length);
+    goToNextSlide();
   };
 
   const prevSlide = (event: React.MouseEvent) => {
     event.stopPropagation();
-    setCurrentIndex((prev) => (prev - 1 + works.length) % works.length);
+    goToPrevSlide();
+  };
+
+  const handleTouchStart = (event: React.TouchEvent) => {
+    const touch = event.touches[0];
+    touchStartX.current = touch.clientX;
+    touchStartY.current = touch.clientY;
+  };
+
+  const handleTouchEnd = (event: React.TouchEvent) => {
+    if (touchStartX.current === null || touchStartY.current === null || works.length <= 1) {
+      return;
+    }
+
+    const touch = event.changedTouches[0];
+    const deltaX = touch.clientX - touchStartX.current;
+    const deltaY = touch.clientY - touchStartY.current;
+
+    touchStartX.current = null;
+    touchStartY.current = null;
+
+    if (Math.abs(deltaX) < 60 || Math.abs(deltaX) <= Math.abs(deltaY)) {
+      return;
+    }
+
+    suppressClickRef.current = true;
+    window.setTimeout(() => {
+      suppressClickRef.current = false;
+    }, 180);
+
+    if (deltaX < 0) {
+      goToNextSlide();
+      return;
+    }
+
+    goToPrevSlide();
+  };
+
+  const handleOpenProject = () => {
+    if (suppressClickRef.current) {
+      return;
+    }
+
+    onWorkClick(activeWork);
   };
 
   return (
@@ -54,8 +108,10 @@ export const FeaturedCarousel: React.FC<FeaturedCarouselProps> = ({ works, onWor
             animate={{ opacity: 1, x: 0 }}
             exit={{ opacity: 0, x: -80 }}
             transition={{ duration: 0.5, ease: [0.4, 0, 0.2, 1] }}
-            className="grid min-h-[520px] cursor-pointer lg:min-h-[540px] lg:grid-cols-[1.15fr_0.85fr]"
-            onClick={() => onWorkClick(activeWork)}
+            className="grid min-h-[520px] cursor-pointer touch-pan-y lg:min-h-[540px] lg:grid-cols-[1.15fr_0.85fr]"
+            onClick={handleOpenProject}
+            onTouchStart={handleTouchStart}
+            onTouchEnd={handleTouchEnd}
           >
             <div className="relative h-[280px] overflow-hidden sm:h-[360px] lg:h-full lg:min-h-[540px]">
               <img

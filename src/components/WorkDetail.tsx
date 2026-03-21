@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { motion } from 'motion/react';
 import { ArrowLeft } from 'lucide-react';
 import ReactMarkdown from 'react-markdown';
@@ -11,7 +11,180 @@ interface WorkDetailProps {
   onWorkClick?: (workId: string) => void;
 }
 
+interface AdaptiveMediaPreferences {
+  autoplayShortVideos: boolean;
+  compactPdf: boolean;
+  lowBandwidth: boolean;
+  reduceMotion: boolean;
+  saveData: boolean;
+  videoPreload: 'metadata' | 'none';
+}
+
+interface SmartVideoProps {
+  autoplayShortVideos: boolean;
+  poster?: string;
+  preload: 'metadata' | 'none';
+  url: string;
+}
+
+const getAdaptiveMediaPreferences = (): AdaptiveMediaPreferences => {
+  if (typeof window === 'undefined') {
+    return {
+      autoplayShortVideos: true,
+      compactPdf: false,
+      lowBandwidth: false,
+      reduceMotion: false,
+      saveData: false,
+      videoPreload: 'metadata'
+    };
+  }
+
+  const navigatorWithConnection = navigator as Navigator & {
+    connection?: {
+      addEventListener?: (type: 'change', listener: () => void) => void;
+      effectiveType?: string;
+      removeEventListener?: (type: 'change', listener: () => void) => void;
+      saveData?: boolean;
+    };
+  };
+  const connection = navigatorWithConnection.connection;
+  const reduceMotion = window.matchMedia?.('(prefers-reduced-motion: reduce)').matches ?? false;
+  const saveData = Boolean(connection?.saveData);
+  const effectiveType = connection?.effectiveType ?? '';
+  const lowBandwidth = ['slow-2g', '2g', '3g'].includes(effectiveType);
+  const compactPdf = window.innerWidth < 960 || saveData || lowBandwidth;
+
+  return {
+    autoplayShortVideos: !reduceMotion && !saveData && !lowBandwidth,
+    compactPdf,
+    lowBandwidth,
+    reduceMotion,
+    saveData,
+    videoPreload: saveData || lowBandwidth ? 'none' : 'metadata'
+  };
+};
+
+const useAdaptiveMediaPreferences = () => {
+  const [preferences, setPreferences] = useState<AdaptiveMediaPreferences>(getAdaptiveMediaPreferences);
+
+  useEffect(() => {
+    const syncPreferences = () => setPreferences(getAdaptiveMediaPreferences());
+    const reducedMotionQuery = window.matchMedia?.('(prefers-reduced-motion: reduce)');
+    const navigatorWithConnection = navigator as Navigator & {
+      connection?: {
+        addEventListener?: (type: 'change', listener: () => void) => void;
+        removeEventListener?: (type: 'change', listener: () => void) => void;
+      };
+    };
+    const connection = navigatorWithConnection.connection;
+
+    syncPreferences();
+    window.addEventListener('resize', syncPreferences);
+    connection?.addEventListener?.('change', syncPreferences);
+
+    if (reducedMotionQuery?.addEventListener) {
+      reducedMotionQuery.addEventListener('change', syncPreferences);
+    } else {
+      reducedMotionQuery?.addListener(syncPreferences);
+    }
+
+    return () => {
+      window.removeEventListener('resize', syncPreferences);
+      connection?.removeEventListener?.('change', syncPreferences);
+
+      if (reducedMotionQuery?.removeEventListener) {
+        reducedMotionQuery.removeEventListener('change', syncPreferences);
+      } else {
+        reducedMotionQuery?.removeListener(syncPreferences);
+      }
+    };
+  }, []);
+
+  return preferences;
+};
+
+const SmartVideo: React.FC<SmartVideoProps> = ({ autoplayShortVideos, poster, preload, url }) => {
+  const videoRef = useRef<HTMLVideoElement | null>(null);
+  const [duration, setDuration] = useState<number | null>(null);
+  const [isVisible, setIsVisible] = useState(false);
+  const isShortVideo = duration !== null && duration <= 60;
+  const shouldAutoplay = autoplayShortVideos && isShortVideo && isVisible;
+
+  useEffect(() => {
+    const video = videoRef.current;
+
+    if (!video || typeof IntersectionObserver === 'undefined') {
+      setIsVisible(true);
+      return;
+    }
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        setIsVisible(entry.isIntersecting && entry.intersectionRatio > 0.45);
+      },
+      {
+        threshold: [0.45, 0.75]
+      }
+    );
+
+    observer.observe(video);
+
+    return () => observer.disconnect();
+  }, []);
+
+  useEffect(() => {
+    const video = videoRef.current;
+
+    if (!video) {
+      return;
+    }
+
+    if (!shouldAutoplay) {
+      video.loop = false;
+
+      if (!video.paused) {
+        video.pause();
+      }
+
+      return;
+    }
+
+    video.defaultMuted = true;
+    video.muted = true;
+    video.loop = true;
+
+    const playPromise = video.play();
+    playPromise?.catch(() => undefined);
+
+    return () => {
+      video.pause();
+      video.loop = false;
+    };
+  }, [shouldAutoplay, url]);
+
+  return (
+    <video
+      ref={videoRef}
+      controls
+      playsInline
+      muted
+      preload={preload}
+      poster={poster}
+      className="w-full bg-black"
+      onLoadedMetadata={(event) => {
+        const nextDuration = event.currentTarget.duration;
+        setDuration(Number.isFinite(nextDuration) ? nextDuration : null);
+      }}
+    >
+      <source src={url} type="video/mp4" />
+      Your browser does not support embedded video playback.
+    </video>
+  );
+};
+
 export const WorkDetail: React.FC<WorkDetailProps> = ({ work, onBack, onWorkClick }) => {
+  const mediaPreferences = useAdaptiveMediaPreferences();
+
   const renderMediaFooter = (caption?: string, url?: string, actionLabel = 'Open media in a new tab') => (
     <div className="border-t border-gold/10 bg-royal-blue-light/80 p-4">
       {caption && <p className="text-center text-xs font-medium text-gold-soft">{caption}</p>}
@@ -157,6 +330,7 @@ export const WorkDetail: React.FC<WorkDetailProps> = ({ work, onBack, onWorkClic
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: index * 0.06 }}
                 className={item.type === 'bubble' || item.type === 'divider' ? '' : 'overflow-hidden rounded-[28px] border border-gold/10 bg-royal-blue-light'}
+                style={item.type === 'bubble' || item.type === 'divider' ? undefined : { contentVisibility: 'auto', containIntrinsicSize: '720px 480px' }}
               >
                 {item.type === 'image' && (
                   <div>
@@ -167,6 +341,7 @@ export const WorkDetail: React.FC<WorkDetailProps> = ({ work, onBack, onWorkClic
                       referrerPolicy="no-referrer"
                       loading="lazy"
                       decoding="async"
+                      sizes="(max-width: 768px) 100vw, (max-width: 1280px) 70vw, 60vw"
                     />
                     {renderMediaFooter(item.caption, item.url, 'Open full image')}
                   </div>
@@ -174,23 +349,43 @@ export const WorkDetail: React.FC<WorkDetailProps> = ({ work, onBack, onWorkClic
 
                 {item.type === 'video' && (
                   <div>
-                    <video controls playsInline preload="metadata" className="w-full">
-                      <source src={item.url} type="video/mp4" />
-                      Your browser does not support embedded video playback.
-                    </video>
+                    <SmartVideo
+                      url={item.url || ''}
+                      poster={work.imageUrl}
+                      preload={mediaPreferences.videoPreload}
+                      autoplayShortVideos={mediaPreferences.autoplayShortVideos}
+                    />
                     {renderMediaFooter(item.caption, item.url, 'Open video file')}
                   </div>
                 )}
 
                 {item.type === 'pdf' && (
                   <div>
-                    <div className="h-[70vh] min-h-[520px] w-full bg-white">
-                      <iframe
-                        src={item.url}
-                        title={item.caption || `${work.title} PDF`}
-                        className="h-full w-full"
-                      />
-                    </div>
+                    {mediaPreferences.compactPdf ? (
+                      <div className="flex min-h-[260px] flex-col items-center justify-center gap-4 px-6 py-10 text-center sm:px-8">
+                        <h2 className="font-serif text-3xl font-semibold text-white">PDF Preview</h2>
+                        <p className="max-w-2xl text-sm leading-7 text-gold-soft sm:text-base">
+                          Embedded PDFs can be unreliable on smaller screens and slower connections, so this project opens the document directly for the best browser compatibility.
+                        </p>
+                        <a
+                          href={item.url}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="rounded-full border border-gold/20 px-5 py-3 text-[10px] font-bold uppercase tracking-[0.28em] text-gold transition-colors hover:border-gold/60 hover:bg-gold/10"
+                        >
+                          Open PDF
+                        </a>
+                      </div>
+                    ) : (
+                      <div className="h-[70vh] min-h-[520px] w-full bg-white">
+                        <iframe
+                          src={item.url}
+                          title={item.caption || `${work.title} PDF`}
+                          className="h-full w-full"
+                          loading="lazy"
+                        />
+                      </div>
+                    )}
                     {renderMediaFooter(item.caption, item.url, 'Open PDF in a new tab')}
                   </div>
                 )}
@@ -233,6 +428,7 @@ export const WorkDetail: React.FC<WorkDetailProps> = ({ work, onBack, onWorkClic
                             referrerPolicy="no-referrer"
                             loading="lazy"
                             decoding="async"
+                            sizes="(max-width: 640px) 100vw, 50vw"
                           />
                         </div>
                       ))}
