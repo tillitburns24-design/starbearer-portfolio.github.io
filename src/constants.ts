@@ -463,12 +463,12 @@ Some of the inspirations for the story of the game come from the movies “Poor 
   },
   {
     id: 'storyboards',
-    title: 'Storyboards',
+    title: 'Storyboards & Animatics',
     works: [
       {
         id: 'm1',
         title: 'The Game',
-        category: 'Storyboards',
+        category: 'Storyboards & Animatics',
         description: 'A storyboard and animatic about the choices we can make in the game called life',
         imageUrl: 'The Game/The Game - Poster.png',
         longDescription: 'Project for the author\'s Bachelor Thesis titled "The Use of Cuts and Transitions in Film Narrative as shown in the personal story \'The Game\'". \n\nBased on a short story from the same author, "[Tišina](work:ph6)", a storyboard and a rough animatic depicting the visual change of taking control over your own life in a world where everyone\'s focus is on themselves.',
@@ -491,7 +491,7 @@ Some of the inspirations for the story of the game come from the movies “Poor 
       {
         id: 'm2',
         title: 'Unsigned Goodbye',
-        category: 'Storyboards',
+        category: 'Storyboards & Animatics',
         description: 'A storyboard of a story related to loving one long lost to you',
         imageUrl: 'Unsigned Goodbye/Unsigned Goodbye - Poster.png',
         longDescription: `"Sometimes, the unsaid farewells are the hardest to let go of"\n\nShort personal story made solely as a storyboard, inspired by all the stories that ended not because there wasn't enough love, but because sometimes the love from another isn't enough to replace the lack of love one has for themselves. The storyboard shows how such an ending can haunt someone even decades after its final word.`,
@@ -505,6 +505,61 @@ Some of the inspirations for the story of the game come from the movies “Poor 
           { label: 'Duration', value: '05/11/2023 - 19/11/2023' },
           { label: 'Role', value: 'Writer, Concept Artist and Illustrator, Storyboard Artist' },
           { label: 'Tools', value: 'Autodesk Sketchbook Pro' }
+        ]
+      },
+      {
+        id: 'm3',
+        title: 'Poltergeist',
+        category: 'Storyboards & Animatics',
+        description: 'An animatic project group based on a pre-existing script',
+        imageUrl: 'Poltergeist/e3944cf7-e4c4-42b8-aa25-6f05fe750455.png',
+        longDescription: 'A group project based on a pre-existing script titled "Poltergeist", where we were given creative freedom regarding the composition and the pacing of the story while keeping true to the original plot and story beats.',
+        media: [
+          { type: 'image', url: 'Poltergeist/e3944cf7-e4c4-42b8-aa25-6f05fe750455.png', caption: 'Poltergeist cover frame' },
+          { type: 'bubble', content: 'Selected storyboard and animatic frames' },
+          {
+            type: 'grid',
+            urls: [
+              'Poltergeist/1.png',
+              'Poltergeist/2.png',
+              'Poltergeist/3.png',
+              'Poltergeist/4.png'
+            ]
+          },
+          {
+            type: 'grid',
+            urls: [
+              'Poltergeist/5.png',
+              'Poltergeist/6.png',
+              'Poltergeist/7.png',
+              'Poltergeist/8.png'
+            ]
+          },
+          {
+            type: 'grid',
+            urls: [
+              'Poltergeist/9.png',
+              'Poltergeist/10.png',
+              'Poltergeist/11.png',
+              'Poltergeist/12.png'
+            ]
+          },
+          {
+            type: 'grid',
+            urls: [
+              'Poltergeist/13.png',
+              'Poltergeist/14.png',
+              'Poltergeist/15.png',
+              'Poltergeist/83058d70-7252-4bdc-a58d-a9f3c7de7792.png'
+            ]
+          },
+          { type: 'image', url: 'Poltergeist/b4cba9ae-45c3-4358-bdbf-f21f2284dc96.png', caption: 'Additional Poltergeist storyboard frame' }
+        ],
+        details: [
+          { label: 'Type', value: 'Group Project (3 members)' },
+          { label: 'Duration', value: '19/11/2023 - 12/01/2024' },
+          { label: 'Role', value: 'Lead Creative, Concept Artist, Character Designer, Environment Designer, Storyboard Artist, Timer' },
+          { label: 'Tools', value: 'Autodesk Sketchbook Pro, Adobe AfterEffects' }
         ]
       }
     ]
@@ -567,6 +622,114 @@ export const MISCELLANEOUS: Category[] = [
           { label: 'Duration', value: '24/08/2025 - 10/10/2025' },
           { label: 'Role', value: 'Researcher, Storyboard Artist, Camera Operator, 3D Animator, Video Editor' },
           { label: 'Tools', value: 'DaVinci Resolve, Blender, 3DF Zephyr' }
+        ]
+      },
+      {
+        id: 'w3',
+        title: 'Cardboard Box Sim',
+        category: '3D Works',
+        description: 'A 3D animated simulation with digital physics',
+        imageUrl: 'Box/Render0339.jpg',
+        longDescription: 'A part of a larger animation project, where 60 animators animated a ball drop and connected it in a continuous loop. Mine was the starting animation, with all models and parameters set by me, with the same already established ball enter and exit time given to every animator.',
+        media: [
+          { type: 'video', url: 'Box/AI_1_2021_Teodora_Jovanović_SVE_PPZ.mp4', caption: 'My part of the bigger project' }
+        ],
+        details: [
+          { label: 'Type', value: 'Solo Project (part of a collective)' },
+          { label: 'Duration', value: '23/03/2024 - 07/04/2024' },
+          { label: 'Role', value: 'Designer, 3D Modeller, Texture Artist, Animator' },
+          { label: 'Tools', value: 'Autodesk 3Ds Max, Adobe Substance Painter' }
+        ]
+      },
+      {
+        id: 'w4',
+        title: 'Street Fishes',
+        category: '3D Works',
+        description: 'A short embedded animation project',
+        imageUrl: 'Fishes/Fish.jpg',
+        longDescription: 'A group project using 3D models and animation in a real world picture/background. The original idea and look were of my design, while the simulated animations were done by the rest of the group. The final compositing of the animation and models in the 3D space, along with the editing and combining the separately rendered elements into one video, was my doing.',
+        media: [
+          { type: 'video', url: 'Fishes/AI_1_2021_AI_13_2021_AI_36_2021_SVE_PP.mp4', caption: 'Final look of the project' }
+        ],
+        details: [
+          { label: 'Type', value: 'Group Project (3 members)' },
+          { label: 'Duration', value: '28/05/2024 - 12/06/2024' },
+          { label: 'Role', value: 'Project Lead, 3D Compositor, Video Editor' },
+          { label: 'Tools', value: 'Autodesk 3Ds Max, Adobe AfterEffects' }
+        ]
+      },
+      {
+        id: 'w5',
+        title: 'LEGION: Scene Recreation',
+        category: '3D Works',
+        description: 'A shot for shot recreation of a chosen scene from show Legion',
+        imageUrl: 'LEGION/Screenshot 2026-03-26 191630.jpg',
+        longDescription: 'As a way to analyze and learn from already published work, this was a project with a goal of reverse engineering a live shot scene in 3D. Ended up doing a shot for shot analysis of the chosen scene and recreating it (without the detailed movement and animation), alongside additional editing with self-recorded voicework and sound effects.',
+        media: [
+          { type: 'video', url: 'LEGION/Legion Scene_ FInal Compare.mp4', caption: 'Comparison of the Original Scene from TV Show LEGION and the final rendition of the 3D recreation, with self-recorded and edited voiceover and sound effects' },
+          { type: 'video', url: 'LEGION/LEGION_Scene.mp4', caption: 'Comparison of the initial length of the chosen scene and the 3D recreation, with the sound and voicework from the original source material' }
+        ],
+        details: [
+          { label: 'Type', value: 'Solo Project' },
+          { label: 'Duration', value: '01/03/2024 - 17/05/2024' },
+          { label: 'Role', value: '3D Blockout, Environment Design, Director, Video Editor, Voice Acting, Foley Artist, Sound Editor, Storyboard Artist' },
+          { label: 'Tools', value: 'Unreal Engine 4.27, DaVinci Resolve' }
+        ]
+      },
+      {
+        id: 'w6',
+        title: 'Character Animation Tests',
+        category: '3D Works',
+        description: 'Collection of 3D character animations done in Blender',
+        imageUrl: 'Character Animation/CA.jpg',
+        longDescription: "A collection of character animations I've done to familiarize myself with the then new-to-me software. The first two were classic animation projects and exercises testing my knowledge of animation principles in a new environment, while the final animation is me showing off a bit.",
+        media: [
+          {
+            type: 'videoGrid',
+            urls: [
+              'Character Animation/AI_1_2021_Teodora_Jovanovic_AK_Govor.mp4',
+              'Character Animation/AI_1_2021_Teodora_Jovanovic_AK_Govor_REF.mp4'
+            ],
+            caption: '3. Animation and original reference for a lip-sync and movement animation'
+          },
+          { type: 'video', url: 'Character Animation/AI_1_2021_Teodora_Jovanovic_AK_NLA.mp4', caption: '2. Non-linear animation of a walk cycle' },
+          {
+            type: 'videoGrid',
+            urls: [
+              'Character Animation/AI_1_2021_Teodora_Jovanović_AK_Dizanje.mp4',
+              'Character Animation/AI_1_2021_Teodora_Jovanović_AK_Dizanje_REF.mp4'
+            ],
+            caption: '1. Animation and the original reference for "Picking up"'
+          }
+        ],
+        details: [
+          { label: 'Type', value: 'Solo Project' },
+          { label: 'Duration', value: '06/12/2023 - 21/01/2024' },
+          { label: 'Role', value: 'Animator' },
+          { label: 'Tools', value: 'Blender' }
+        ]
+      }
+    ]
+  },
+  {
+    id: 'creative-misc',
+    title: 'Creative Misc.',
+    works: [
+      {
+        id: 'cm1',
+        title: 'Mirror Optics',
+        category: 'Creative Misc.',
+        description: 'A short educational animation about the physics of mirrors',
+        imageUrl: 'Optics/AI_1_2021_Teodora_Jovanović_BIO_PP.mp4',
+        longDescription: 'A hand-drawn stickman animation detailing the physics of regular and round mirrors, while showing the logic behind such physics in a simple and educational manner.',
+        media: [
+          { type: 'video', url: 'Optics/AI_1_2021_Teodora_Jovanović_BIO_PP.mp4', caption: 'Full Mirror Optics animation' }
+        ],
+        details: [
+          { label: 'Type', value: 'Solo Project' },
+          { label: 'Duration', value: '08/09/2026 - 11/09/2026' },
+          { label: 'Role', value: 'Animator' },
+          { label: 'Tools', value: 'Autodesk Sketchbook Pro' }
         ]
       }
     ]

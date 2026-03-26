@@ -36,6 +36,7 @@ export const FeaturedCarousel: React.FC<FeaturedCarouselProps> = ({ works, onWor
 
   const activeWork = works[currentIndex];
   const featuredImageStyle = activeWork.title === 'The Game' ? { objectPosition: 'center 18%' as const } : undefined;
+  const isVideoCover = /\.mp4($|\?)/i.test(activeWork.imageUrl);
 
   const goToNextSlide = () => {
     setCurrentIndex((prev) => (prev + 1) % works.length);
@@ -114,15 +115,28 @@ export const FeaturedCarousel: React.FC<FeaturedCarouselProps> = ({ works, onWor
             onTouchEnd={handleTouchEnd}
           >
             <div className="relative h-[280px] overflow-hidden sm:h-[360px] lg:h-full lg:min-h-[540px]">
-              <img
-                src={activeWork.imageUrl}
-                alt={activeWork.title}
-                className="h-full w-full object-cover object-center"
-                style={featuredImageStyle}
-                referrerPolicy="no-referrer"
-                loading="lazy"
-                decoding="async"
-              />
+              {isVideoCover ? (
+                <video
+                  src={activeWork.imageUrl}
+                  className="h-full w-full object-cover object-center"
+                  style={featuredImageStyle}
+                  autoPlay
+                  muted
+                  loop
+                  playsInline
+                  preload="metadata"
+                />
+              ) : (
+                <img
+                  src={activeWork.imageUrl}
+                  alt={activeWork.title}
+                  className="h-full w-full object-cover object-center"
+                  style={featuredImageStyle}
+                  referrerPolicy="no-referrer"
+                  loading="lazy"
+                  decoding="async"
+                />
+              )}
               <div className="absolute inset-0 bg-gradient-to-b from-transparent via-royal-blue/15 to-royal-blue lg:bg-gradient-to-r lg:from-transparent lg:via-royal-blue/10 lg:to-royal-blue" />
             </div>
 

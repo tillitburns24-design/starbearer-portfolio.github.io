@@ -1,4 +1,4 @@
-export type MediaType = 'image' | 'video' | 'text' | 'divider' | 'bubble' | 'markdown' | 'grid' | 'pdf';
+export type MediaType = 'image' | 'video' | 'videoGrid' | 'text' | 'divider' | 'bubble' | 'markdown' | 'grid' | 'pdf';
 
 export interface MediaItem {
   type: MediaType;

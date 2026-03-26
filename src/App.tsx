@@ -43,7 +43,7 @@ export default function App() {
   });
 
   // Get specific featured works
-  const featuredTitles = ["The Game", "Death's Return", "Her Guardian", "Ceres"];
+  const featuredTitles = ["The Game", "Death's Return", "LEGION: Scene Recreation", "Ceres"];
   const allWorks = [...PROJECTS, ...miscellaneousCategories].flatMap(cat => cat.works);
   const featuredWorks = featuredTitles
     .map(title => allWorks.find(w => w.title === title))

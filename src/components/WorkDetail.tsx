@@ -184,6 +184,7 @@ const SmartVideo: React.FC<SmartVideoProps> = ({ autoplayShortVideos, poster, pr
 
 export const WorkDetail: React.FC<WorkDetailProps> = ({ work, onBack, onWorkClick }) => {
   const mediaPreferences = useAdaptiveMediaPreferences();
+  const isVideoCover = /\.mp4($|\?)/i.test(work.imageUrl);
 
   const renderMediaFooter = (caption?: string, url?: string, actionLabel = 'Open media in a new tab') => (
     <div className="border-t border-gold/10 bg-royal-blue-light/80 p-4">
@@ -288,13 +289,25 @@ export const WorkDetail: React.FC<WorkDetailProps> = ({ work, onBack, onWorkClic
         <div className="grid grid-cols-1 gap-8 xl:grid-cols-[minmax(0,1fr)_296px] xl:gap-10">
           <aside className="order-1 h-fit space-y-6 xl:order-2 xl:sticky xl:top-28">
             <div className="overflow-hidden rounded-[28px] border border-gold/10 bg-royal-blue-light">
-              <img
-                src={work.imageUrl}
-                alt={work.title}
-                className="aspect-[5/4] w-full object-cover"
-                referrerPolicy="no-referrer"
-                decoding="async"
-              />
+              {isVideoCover ? (
+                <video
+                  src={work.imageUrl}
+                  className="aspect-[5/4] w-full object-cover"
+                  autoPlay
+                  muted
+                  loop
+                  playsInline
+                  preload="metadata"
+                />
+              ) : (
+                <img
+                  src={work.imageUrl}
+                  alt={work.title}
+                  className="aspect-[5/4] w-full object-cover"
+                  referrerPolicy="no-referrer"
+                  decoding="async"
+                />
+              )}
             </div>
 
             <div className="rounded-[28px] border border-gold/10 bg-royal-blue-light p-5">
@@ -356,6 +369,24 @@ export const WorkDetail: React.FC<WorkDetailProps> = ({ work, onBack, onWorkClic
                       autoplayShortVideos={mediaPreferences.autoplayShortVideos}
                     />
                     {renderMediaFooter(item.caption, item.url, 'Open video file')}
+                  </div>
+                )}
+
+                {item.type === 'videoGrid' && (
+                  <div>
+                    <div className="grid grid-cols-1 gap-4 p-4 sm:grid-cols-2">
+                      {item.urls?.map((url, videoIndex) => (
+                        <div key={`${url}-${videoIndex}`} className="overflow-hidden rounded-2xl border border-gold/10">
+                          <SmartVideo
+                            url={url}
+                            poster={work.imageUrl}
+                            preload={mediaPreferences.videoPreload}
+                            autoplayShortVideos={mediaPreferences.autoplayShortVideos}
+                          />
+                        </div>
+                      ))}
+                    </div>
+                    {(item.caption || item.urls?.[0]) && renderMediaFooter(item.caption, item.urls?.[0], 'Open first video file')}
                   </div>
                 )}
 
