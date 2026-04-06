@@ -589,6 +589,24 @@ Some of the inspirations for the story of the game come from the movies “Poor 
           { label: 'Role', value: 'Lead Creative, Concept Artist, Character Designer, Environment Designer, Storyboard Artist, Timer' },
           { label: 'Tools', value: 'Autodesk Sketchbook Pro, Adobe AfterEffects' }
         ]
+      },
+      {
+        id: 'm4',
+        title: 'General Atlas',
+        category: 'Storyboards & Animatics',
+        description: 'A series of animatics giving depth to the short story General Atlas',
+        imageUrl: 'Animatics/Atlas.png',
+        longDescription: 'After writing the original short story, [General Atlas](work:ph5), the inspiration to give depth to its world stayed and so a few shorter animatics set in the world have been made. It is currently an unfinished project but it might get two more animatics.',
+        media: [
+          { type: 'video', url: 'Animatics/General Atlas - Kindness.mp4', caption: "A view into the General's mentality during the final battle not shown in the original written work" },
+          { type: 'video', url: 'Animatics/General Atlas - Beginning .mp4', caption: "The scene from before the start of the War, shows the General's origin and the dynamic between the General and her Her before the War" }
+        ],
+        details: [
+          { label: 'Type', value: 'Solo Project' },
+          { label: 'Duration', value: '02/12/2025 - 06/12/2025' },
+          { label: 'Status', value: 'Unfinished' },
+          { label: 'Role', value: 'Writer, Artist' }
+        ]
       }
     ]
   }
@@ -796,9 +814,46 @@ export const MISCELLANEOUS: Category[] = sortCategoriesByNewest([
         ],
         details: [
           { label: 'Type', value: 'Solo Project' },
-          { label: 'Duration', value: '08/09/2026 - 11/09/2026' },
+          { label: 'Duration', value: '08/09/2025 - 11/09/2025' },
           { label: 'Role', value: 'Animator' },
           { label: 'Tools', value: 'Autodesk Sketchbook Pro' }
+        ]
+      },
+      {
+        id: 'cm4',
+        title: 'Animatic Trends',
+        category: 'Creative Misc.',
+        description: 'A few animatics based on art trends from the time',
+        imageUrl: 'Animatics/King.png',
+        longDescription: "As a challenge, I've tried to do a few art animatic trends with me as the center focus of them. Ended up picking the Sienna and Soldier, Poet, King trends and have done these two videos on the topic.",
+        media: [
+          { type: 'video', url: 'Animatics/Sienna trend.mp4', caption: "Oh Sienna trend - showing the favorite characters of the artist, mine being Kim Dokja from Omniscient Reader's Viewpoint, Technoblade from Minecraft SMPs, Midoriya Izuku from My Hero Academia, Percy Jackson from the Rick Riordan books, and Din Djarin from The Mandalorian" },
+          { type: 'video', url: 'Animatics/Soldier, Poet, King trend.mp4', caption: 'Trend from the Soldier, Poet, King by The Oh Hellos song - shows which of the three archetypes the artist fits most regardless of personal preference' }
+        ],
+        details: [
+          { label: 'Type', value: 'Solo Project' },
+          { label: 'Duration', value: '30/11/2025 - 01/12/2025' },
+          { label: 'Role', value: 'Artist' }
+        ]
+      },
+      {
+        id: 'cm5',
+        title: 'Ko Vam Glumi Sonju Savić? Posters',
+        category: 'Creative Misc.',
+        description: 'A series of posters made based on the theatre play "Ko vam glumi Sonju Savić?"',
+        imageUrl: 'Posters/A Koga Zanima Istina.jpg',
+        longDescription: 'After seeing the play live, I was inspired to make a series of posters and illustrations based on the moments within the show that had the most emotional impact to me. Using the quotes from the play, I took inspiration from the very messy punk style of posters that I believe encapsulated the emotions held within the show.',
+        media: [
+          { type: 'image', url: 'Posters/A Koga Zanima Istina.jpg', caption: 'A Koga Zanima Istina!! - Main and first poster of the series, based on the main theme of the show' },
+          { type: 'image', url: 'Posters/Klekni!Poljubi!Ubi!.jpg', caption: 'Klekni! Poljubi! Ubi! - Second piece of the series' },
+          { type: 'image', url: 'Posters/Hvala.jpg', caption: 'Hvala - Third piece of the series, based on the middle part of the show where one of the performers was actively pouring water down his throat while thanking everyone for their contributions to the play' },
+          { type: 'image', url: 'Posters/umro je sam.jpg', caption: 'umro je sam - Fourth piece of the series' },
+          { type: 'image', url: 'Posters/Njegova priča.jpg', caption: 'Njegova priča - Final piece of the series, based on the very ending of the show, showing the state of the theatre industry and how it treats its performers' }
+        ],
+        details: [
+          { label: 'Type', value: 'Solo Project' },
+          { label: 'Duration', value: '09/12/2023 - 17/12/2023' },
+          { label: 'Role', value: 'Designer, Artist' }
         ]
       }
     ]
