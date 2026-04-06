@@ -356,7 +356,7 @@ export const WorkDetail: React.FC<WorkDetailProps> = ({ work, onBack, onWorkClic
                       decoding="async"
                       sizes="(max-width: 768px) 100vw, (max-width: 1280px) 70vw, 60vw"
                     />
-                    {renderMediaFooter(item.caption, item.url, 'Open full image')}
+                    {!item.hideFooter && renderMediaFooter(item.caption, item.url, 'Open full image')}
                   </div>
                 )}
 

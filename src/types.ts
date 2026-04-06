@@ -2,6 +2,7 @@ export type MediaType = 'image' | 'video' | 'videoGrid' | 'text' | 'divider' | '
 
 export interface MediaItem {
   type: MediaType;
+  hideFooter?: boolean;
   url?: string;
   urls?: string[];
   content?: string;

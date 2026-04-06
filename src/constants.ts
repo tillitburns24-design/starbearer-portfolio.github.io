@@ -1,4 +1,4 @@
-import { Category, Contact } from './types';
+import { Category, Contact, Work } from './types';
 
 const createTextCover = (title: string, subtitle: string) => {
   const svg = `
@@ -33,7 +33,35 @@ const createTextCover = (title: string, subtitle: string) => {
   return `data:image/svg+xml;charset=UTF-8,${encodeURIComponent(svg)}`;
 };
 
-export const PROJECTS: Category[] = [
+const parseWorkEndDate = (work: Work) => {
+  const duration = work.details.find((detail) => detail.label === 'Duration')?.value;
+  const year = work.details.find((detail) => detail.label === 'Year')?.value;
+  const source = (duration || year || '').replace(/[–—]/g, '-');
+  const dateMatches = source.match(/\d{1,2}\/\d{1,2}\/\d{2,4}/g);
+
+  if (dateMatches && dateMatches.length > 0) {
+    const [day, month, rawYear] = dateMatches[dateMatches.length - 1].split('/');
+    const normalizedYear = rawYear.length === 2 ? `20${rawYear}` : rawYear;
+
+    return new Date(`${normalizedYear}-${month.padStart(2, '0')}-${day.padStart(2, '0')}T23:59:59`).getTime();
+  }
+
+  const yearMatches = source.match(/\b(19|20)\d{2}\b/g);
+
+  if (yearMatches && yearMatches.length > 0) {
+    return new Date(`${yearMatches[yearMatches.length - 1]}-12-31T23:59:59`).getTime();
+  }
+
+  return 0;
+};
+
+const sortCategoriesByNewest = (categories: Category[]) =>
+  categories.map((category) => ({
+    ...category,
+    works: [...category.works].sort((left, right) => parseWorkEndDate(right) - parseWorkEndDate(left))
+  }));
+
+export const PROJECTS: Category[] = sortCategoriesByNewest([
   {
     id: 'level-design',
     title: 'Level Design',
@@ -564,9 +592,9 @@ Some of the inspirations for the story of the game come from the movies “Poor 
       }
     ]
   }
-];
+]);
 
-export const MISCELLANEOUS: Category[] = [
+export const MISCELLANEOUS: Category[] = sortCategoriesByNewest([
   {
     id: 'three-d-works',
     title: '3D Works',
@@ -715,6 +743,47 @@ export const MISCELLANEOUS: Category[] = [
     id: 'creative-misc',
     title: 'Creative Misc.',
     works: [
+      {
+        id: 'cm2',
+        title: 'Taxi',
+        category: 'Creative Misc.',
+        description: 'A short comic about finding home.',
+        imageUrl: 'Taxi/Taxi!.jpg',
+        longDescription: 'A short comic made as a part of the short story series. Inspired by the urban myths in Japan regarding the lost souls and ghosts who rely on taxi drivers to take them home, with the bonus page comparing the culture behind those beliefs to the urban myths from New Orleans.',
+        media: [
+          { type: 'image', url: 'Taxi/pg 1.jpg', hideFooter: true },
+          { type: 'image', url: 'Taxi/pg 2.jpg', hideFooter: true },
+          { type: 'image', url: 'Taxi/pg 3.jpg', hideFooter: true },
+          { type: 'image', url: 'Taxi/pg 4.jpg', hideFooter: true }
+        ],
+        details: [
+          { label: 'Type', value: 'Solo Project' },
+          { label: 'Duration', value: '18/08/2025 - 28/08/2025' },
+          { label: 'Role', value: 'Writer, Artist' }
+        ]
+      },
+      {
+        id: 'cm3',
+        title: 'Zvezda, Beg, Mir',
+        category: 'Creative Misc.',
+        description: 'A short comic about a Star, a Runaway, and the different perspectives of the same memory',
+        imageUrl: 'San/San.jpg',
+        longDescription: 'A short comic done as a part of the second short story series, with the theme being "Dreams". Inspiration stems from the often illogical nature of dreams and memories, and how a person\'s view of a real-life event often gets skewed by their emotions.',
+        media: [
+          { type: 'image', url: 'San/San pg 1.jpg', hideFooter: true },
+          { type: 'image', url: 'San/San pg 2.jpg', hideFooter: true },
+          { type: 'image', url: 'San/San pg 3.jpg', hideFooter: true },
+          { type: 'image', url: 'San/San pg 4.jpg', hideFooter: true },
+          { type: 'image', url: 'San/San pg 5.jpg', hideFooter: true },
+          { type: 'image', url: 'San/San pg 6.jpg', hideFooter: true },
+          { type: 'image', url: 'San/San pg 7.jpg', hideFooter: true }
+        ],
+        details: [
+          { label: 'Type', value: 'Solo Project' },
+          { label: 'Duration', value: '18/05/2026 - 27/05/2026' },
+          { label: 'Role', value: 'Writer, Artist' }
+        ]
+      },
       {
         id: 'cm1',
         title: 'Mirror Optics',
@@ -1284,7 +1353,7 @@ Ne zna i ne želim da znam za postojanje bez neba, bez horizonta, bez njega i be
       },
     ]
   }
-];
+]);
 
 export const CONTACTS: Contact[] = [
   { label: 'email', value: 'therrajovanovic@gmail.com', link: 'mailto:therrajovanovic@gmail.com' },
