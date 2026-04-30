@@ -36,14 +36,10 @@ const StarBackground: React.FC = () => {
 export default function App() {
   const [selectedWork, setSelectedWork] = useState<Work | null>(null);
   const [selectedCategory, setSelectedCategory] = useState<Category | null>(null);
-  const miscellaneousCategories = [...MISCELLANEOUS].sort((left, right) => {
-    if (left.id === 'writing') return -1;
-    if (right.id === 'writing') return 1;
-    return 0;
-  });
+  const miscellaneousCategories = MISCELLANEOUS;
 
   // Get specific featured works
-  const featuredTitles = ["The Game", "Death's Return", "LEGION: Scene Recreation", "Ceres"];
+  const featuredTitles = ["The Game", "Death's Return", "LEGION", "Ceres"];
   const allWorks = [...PROJECTS, ...miscellaneousCategories].flatMap(cat => cat.works);
   const featuredWorks = featuredTitles
     .map(title => allWorks.find(w => w.title === title))
@@ -76,14 +72,14 @@ export default function App() {
               />
 
               <Stripe 
-                title="Main Projects" 
+                title="Main Focus" 
                 categories={PROJECTS} 
                 onWorkClick={(work) => setSelectedWork(work)} 
                 onViewAll={(cat) => setSelectedCategory(cat)}
               />
               
               <Stripe 
-                title="Additional Interests" 
+                title="Even more Art" 
                 categories={miscellaneousCategories} 
                 onWorkClick={(work) => setSelectedWork(work)} 
                 onViewAll={(cat) => setSelectedCategory(cat)}

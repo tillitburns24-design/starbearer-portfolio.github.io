@@ -52,7 +52,7 @@ export const Header: React.FC = () => {
               Teodora Jovanović
             </h1>
             <p className="mb-6 text-[11px] font-bold uppercase tracking-[0.32em] text-gold sm:text-xs">
-              Storyteller, writer, storyboard artist, concept artist, creative
+              Storyteller, Game Designer, Storyboard Artist, Writer, Concept Artist
             </p>
 
             <div className="mx-auto mb-8 grid max-w-xl gap-3 lg:mx-0">
@@ -65,7 +65,7 @@ export const Header: React.FC = () => {
             </div>
 
             <p className="mb-8 max-w-2xl text-sm leading-7 text-gold-soft sm:text-base">
-              Exploring the intersection of level design, game mechanics, and visual storytelling.
+              Exploring the intersection of narrative design, audience interraction and visual storytelling.
               Crafting immersive worlds and digital experiences with a focus on narrative, atmosphere, and player catharsis.
             </p>
 

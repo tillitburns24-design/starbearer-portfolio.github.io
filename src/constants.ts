@@ -37,6 +37,11 @@ const parseWorkEndDate = (work: Work) => {
   const duration = work.details.find((detail) => detail.label === 'Duration')?.value;
   const year = work.details.find((detail) => detail.label === 'Year')?.value;
   const source = (duration || year || '').replace(/[–—]/g, '-');
+
+  if (/\b(ongoing|current)\b/i.test(source)) {
+    return Number.MAX_SAFE_INTEGER;
+  }
+
   const dateMatches = source.match(/\d{1,2}\/\d{1,2}\/\d{2,4}/g);
 
   if (dateMatches && dateMatches.length > 0) {
@@ -61,7 +66,7 @@ const sortCategoriesByNewest = (categories: Category[]) =>
     works: [...category.works].sort((left, right) => parseWorkEndDate(right) - parseWorkEndDate(left))
   }));
 
-export const PROJECTS: Category[] = sortCategoriesByNewest([
+const BASE_PROJECTS: Category[] = [
   {
     id: 'level-design',
     title: 'Level Design',
@@ -610,9 +615,9 @@ Some of the inspirations for the story of the game come from the movies “Poor 
       }
     ]
   }
-]);
+];
 
-export const MISCELLANEOUS: Category[] = sortCategoriesByNewest([
+const BASE_MISCELLANEOUS: Category[] = [
   {
     id: 'three-d-works',
     title: '3D Works',
@@ -1408,6 +1413,238 @@ Ne zna i ne želim da znam za postojanje bez neba, bez horizonta, bez njega i be
       },
     ]
   }
+];
+
+const findCategory = (categories: Category[], id: string) => categories.find((category) => category.id === id);
+
+const relabelWork = (work: Work, category: string, overrides: Partial<Work> = {}): Work => ({
+  ...work,
+  ...overrides,
+  category
+});
+
+const findWorkInList = (works: Work[], workId: string) => {
+  const work = works.find((entry) => entry.id === workId);
+
+  if (!work) {
+    throw new Error(`Work with id "${workId}" was not found.`);
+  }
+
+  return work;
+};
+
+const baseStoryboards = findCategory(BASE_PROJECTS, 'storyboards')?.works ?? [];
+const baseThreeDWorks = findCategory(BASE_MISCELLANEOUS, 'three-d-works')?.works ?? [];
+const baseWritingWorks = findCategory(BASE_MISCELLANEOUS, 'writing')?.works ?? [];
+const baseCreativeMiscWorks = findCategory(BASE_MISCELLANEOUS, 'creative-misc')?.works ?? [];
+
+export const PROJECTS: Category[] = sortCategoriesByNewest(
+  BASE_PROJECTS.map((category) => {
+    if (category.id !== 'storyboards') {
+      return category;
+    }
+
+    return {
+      ...category,
+      title: 'Storyboards',
+      works: category.works
+        .filter((work) => work.id !== 'm4')
+        .map((work) => relabelWork(work, 'Storyboards'))
+    };
+  })
+);
+
+export const MISCELLANEOUS: Category[] = sortCategoriesByNewest([
+  {
+    id: 'three-d-models',
+    title: '3D Models',
+    works: [
+      relabelWork(findWorkInList(baseThreeDWorks, 'w3'), '3D Models', { title: 'Cardboard Box' }),
+      relabelWork(findWorkInList(baseThreeDWorks, 'w1'), '3D Models'),
+      relabelWork(findWorkInList(baseThreeDWorks, 'w4'), '3D Models')
+    ]
+  },
+  {
+    id: 'short-prose',
+    title: 'Short Prose',
+    works: baseWritingWorks
+      .filter((work) => work.id !== 'ph3')
+      .map((work) => relabelWork(work, 'Short Prose'))
+  },
+  {
+    id: 'three-d-animation-post',
+    title: '3D Animation & Post-Production',
+    works: [
+      relabelWork(findWorkInList(baseThreeDWorks, 'w2'), '3D Animation & Post-Production', { title: 'Cultural Monuments' }),
+      relabelWork(findWorkInList(baseThreeDWorks, 'w5'), '3D Animation & Post-Production', { title: 'LEGION' }),
+      relabelWork(findWorkInList(baseThreeDWorks, 'w6'), '3D Animation & Post-Production')
+    ]
+  },
+  {
+    id: 'animatics',
+    title: 'Animatics',
+    works: [
+      relabelWork(findWorkInList(baseStoryboards, 'm4'), 'Animatics'),
+      relabelWork(findWorkInList(baseCreativeMiscWorks, 'cm4'), 'Animatics'),
+      relabelWork(findWorkInList(baseCreativeMiscWorks, 'cm1'), 'Animatics')
+    ]
+  },
+  {
+    id: 'comics',
+    title: 'Comics',
+    works: [
+      relabelWork(findWorkInList(baseWritingWorks, 'ph3'), 'Comics', { title: 'Izlo�ba Razgovora' }),
+      relabelWork(findWorkInList(baseCreativeMiscWorks, 'cm2'), 'Comics'),
+      relabelWork(findWorkInList(baseCreativeMiscWorks, 'cm3'), 'Comics')
+    ]
+  },
+  {
+    id: 'concepts-posters',
+    title: 'Concepts & Posters',
+    works: [
+      relabelWork(findWorkInList(baseCreativeMiscWorks, 'cm5'), 'Concepts & Posters'),
+      {
+        id: 'cp1',
+        title: 'Lone Crimson',
+        category: 'Concepts & Posters',
+        description: 'A game and story concept about how mental illness can manifest',
+        imageUrl: 'Lone Crimson/Banner.jpg',
+        longDescription: `" - People will believe anything if it helps them face their reality head on.
+- What have you done Red? "
+
+A game and story concept still in its infancy, exploring the reality of living with PTSD, anger management and maladaptive daydreaming from the perspective of a young adult, Red, having her day to day analysed by her therapist. The story isn't fully developed but the main focus of the dynamic between Red and her best friend and girlfriend Blue, and the atmosphere of the story itself is.`,
+        media: [
+          { type: 'image', url: 'Lone Crimson/Banner.jpg', caption: 'Lone Crimson Poster' },
+          {
+            type: 'grid',
+            urls: [
+              'Lone Crimson/Red Poster.jpg',
+              'Lone Crimson/Red Character Sheet.jpg'
+            ],
+            caption: 'Main character Red - character poster and concept sketches'
+          },
+          {
+            type: 'grid',
+            urls: [
+              'Lone Crimson/Red n Blue Character comparison.jpg',
+              'Lone Crimson/Character design.jpg'
+            ],
+            caption: 'Character designs and concepts - Red and Blue as the main dynamic, and rough sketches and notes for the rest of the cast'
+          },
+          {
+            type: 'grid',
+            urls: [
+              'Lone Crimson/Red Blu 1.png',
+              'Lone Crimson/Red Blue 2.png',
+              'Lone Crimson/Red Blu 3.png',
+              'Lone Crimson/Red Blu 4.png',
+              'Lone Crimson/Red Blu 5.png',
+              'Lone Crimson/Red Blu 6.png'
+            ],
+            caption: 'Additional character dynamic concepts for Red and Blue'
+          }
+        ],
+        details: [
+          { label: 'Type', value: 'Solo Project' },
+          { label: 'Duration', value: '18/01/2024 - Ongoing' },
+          { label: 'Role', value: 'Writer, Concept Artist, Illustrator' }
+        ]
+      },
+      {
+        id: 'cp2',
+        title: 'Delphi - Character and Story Concept',
+        category: 'Concepts & Posters',
+        description: 'A character design and story of a mother in a porcelain doll body',
+        imageUrl: 'Delphi/Introspection.jpg',
+        longDescription: 'Made for a group improvised storytelling project, Delphi (short for Delphinium) is an amnesiac Geppetin Barbarian, that is only looking for her kids. As someone who, unbeknownst to her, already died and lost her memory twice, Delphi is slowly regaining her sense of self and memories from both of her past lifetimes while trying to figure out how she lost her human body and gained her porcelain one',
+        media: [
+          {
+            type: 'grid',
+            urls: [
+              'Delphi/First sketch.jpg',
+              'Delphi/First Look.jpg'
+            ],
+            caption: 'The first concept and design for Delphi'
+          },
+          {
+            type: 'grid',
+            urls: [
+              'Delphi/Poster sketch.jpg',
+              'Delphi/Poster rough.jpg',
+              'Delphi/Poster final.jpg'
+            ],
+            caption: 'Poster inspired by Perfect Blue - showcases Delphi as she is now and as she was as a human'
+          },
+          {
+            type: 'grid',
+            urls: [
+              'Delphi/Before Sketch.jpg',
+              'Delphi/Before final.jpg'
+            ],
+            caption: "Delphi's family from before her death - her Circus"
+          },
+          {
+            type: 'grid',
+            urls: [
+              'Delphi/After Sketch.jpg',
+              'Delphi/After final.jpg'
+            ],
+            caption: "Delphi's family after she gained her new body - her Kids"
+          },
+          {
+            type: 'grid',
+            urls: [
+              'Delphi/Now Sketch.jpg',
+              'Delphi/Now final.jpg'
+            ],
+            caption: "Delphi's family now that she forgot everything - her Siblings"
+          },
+          { type: 'bubble', content: 'Addition character posters' },
+          { type: 'image', url: 'Delphi/Creation.jpg', caption: 'Creation - The making of the Porcelain Prison' },
+          { type: 'image', url: 'Delphi/Introspection.jpg', caption: 'Introspection - The layers of a lost Psyche' }
+        ],
+        details: [
+          { label: 'Type', value: 'Group Project (1 main storyteller, 5 additional ones)' },
+          { label: 'Duration', value: '28/01/2025 - Discontinued' },
+          { label: 'Role', value: 'Supporting Storyteller, Character Designer, Concept Artist, Illustrator' }
+        ]
+      },
+      {
+        id: 'cp3',
+        title: 'Leah the Lioness',
+        category: 'Concepts & Posters',
+        description: 'A hybrid character concept and design',
+        imageUrl: 'Leah/Final Poster.png',
+        longDescription: 'The outcome of a project where a group of peers all had the same prompt: "Make a character design and character poster where the character has some animal hybrid features". Leah is the outcome of said project',
+        media: [
+          { type: 'image', url: 'Leah/Lioness.png', caption: 'First character sketch' },
+          {
+            type: 'grid',
+            urls: [
+              'Leah/Lioness Lineup - No Skull.png',
+              'Leah/Lioness Lineup - Skull.png'
+            ],
+            caption: 'Character Turnaround - with and without the Skull Mask'
+          },
+          {
+            type: 'grid',
+            urls: [
+              'Leah/Backup Poster.png',
+              'Leah/Drama Poster.png',
+              'Leah/Poster Final - Greyscale.png'
+            ],
+            caption: 'Grayscale poster sketches and designs'
+          },
+          { type: 'image', url: 'Leah/Final Poster.png', caption: 'The final poster design in colour' }
+        ],
+        details: [
+          { label: 'Type', value: 'Solo Project' },
+          { label: 'Duration', value: '28/05/2022 - 18/06/2022' },
+          { label: 'Role', value: 'Concept Artist, Character Design, Illustrator' }
+        ]
+      }
+    ]
+  }
 ]);
 
 export const CONTACTS: Contact[] = [
@@ -1419,3 +1656,4 @@ export const CONTACTS: Contact[] = [
 export const FOOTER_CONTACTS: Contact[] = [
   ...CONTACTS
 ];
+
