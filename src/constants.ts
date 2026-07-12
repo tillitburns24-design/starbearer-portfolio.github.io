@@ -1493,7 +1493,7 @@ export const MISCELLANEOUS: Category[] = sortCategoriesByNewest([
     id: 'comics',
     title: 'Comics',
     works: [
-      relabelWork(findWorkInList(baseWritingWorks, 'ph3'), 'Comics', { title: 'Izložba Razgovora' }),
+      relabelWork(findWorkInList(baseWritingWorks, 'ph3'), 'Comics', { title: 'Izloï¿½ba Razgovora' }),
       relabelWork(findWorkInList(baseCreativeMiscWorks, 'cm2'), 'Comics'),
       relabelWork(findWorkInList(baseCreativeMiscWorks, 'cm3'), 'Comics')
     ]
@@ -1650,7 +1650,7 @@ A game and story concept still in its infancy, exploring the reality of living w
 export const CONTACTS: Contact[] = [
   { label: 'email', value: 'therrajovanovic@gmail.com', link: 'mailto:therrajovanovic@gmail.com' },
   { label: 'LinkedIn', value: 'linkedin.com/in/teodora-jovanovic', link: 'https://www.linkedin.com/in/teodora-jovanovi%C4%87-59792a3b6/' },
-  { label: 'Instagram', value: '@inferna_jax', link: 'https://www.instagram.com/inferna_jax/' }
+  { label: 'Instagram', value: '@artist_starbearer', link: 'https://www.instagram.com/artist_starbearer/' }
 ];
 
 export const FOOTER_CONTACTS: Contact[] = [
